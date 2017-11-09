@@ -26,7 +26,25 @@ def print_footer(names)
 	puts "Overall, we have #{names.count} great students"
 end
 
+def input_students
+	puts "Please enter the names of the studens"
+	puts "To finish, just hit 'return' twice"
+	# create empty array
+	students = []
+	name = gets.chomp
+	# while the name is not empty, repeat the following:
+	while !name.empty? do
+		students << {name: name, cohort: :november}
+		puts "Now we have #{students.count} students"
+		#get amother name from the user
+		name = gets.chomp
+	end
+	## return the array of students
+	students
+end
+
 #nothing happens until we call the methods
+students = input_students
 print_header
 print_names(students)
 print_footer(students)
