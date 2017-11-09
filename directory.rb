@@ -15,6 +15,4 @@ puts "Joffrey Baratheon"
 puts "Norman Bates"
 
 #finally we print the total number of students
-print "Overall, we have " #print does not add a new line character
-print student_count
-puts " great students" #puts does add a new line character
+print "Overall, we have #{student_count} great students" #print does not add a new line character
