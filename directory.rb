@@ -1,11 +1,11 @@
 #first we put the list of students in an array
-students [
+students = [
 	"Dr. Hannibal Lecter",
 	"Darth Vader",
 	"Nurse Ratched", 
 	"Michael Corleone",
 	"Alex DeLarge",
-	"The Wicked Witch of the West"
+	"The Wicked Witch of the West",
 	"Terminator",
 	"Freddy Krueger",
 	"The Joker",
@@ -13,10 +13,20 @@ students [
 	"Norman Bates" 
 ]
 
-#then we print their names
-puts "The students of Villains Academy"
-puts "--------------"
-students.each{|student| puts student}
+def print_header
+	puts "The students of Villains Academy"
+	puts "--------------"
+end
 
-#finally we print the total number of students
-print "Overall, we have #{students.count} great students" #print does not add a new line character
+def print_names(names)
+	names.each {|student_name| puts student_name}
+end
+
+def print_footer(names)
+	puts "Overall, we have #{names.count} great students"
+end
+
+#nothing happens until we call the methods
+print_header
+print_names(students)
+print_footer(students)
