@@ -19,7 +19,11 @@ def print_header
 end
 
 def print(names)
-	names.each.with_index(1) {|student, index| puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"}
+	names.each.with_index(1) do |student, index| 
+		if student[:name][0].downcase == 'a' ## ONLY PRINT STUDENTS WHOSE NAMES START WITH A
+			puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)" 
+		end
+	end
 end
 
 def print_footer(names)
