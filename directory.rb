@@ -20,7 +20,7 @@ end
 
 def print(names)
 	names.each.with_index(1) do |student, index| 
-		if student[:name][0].downcase == 'a' ## ONLY PRINT STUDENTS WHOSE NAMES START WITH A
+		if student[:name].length < 12 ## ONLY PRINT STUDENTS WHOSE NAMES are under 12 characters long
 			puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)" 
 		end
 	end
