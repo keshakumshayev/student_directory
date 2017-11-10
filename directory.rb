@@ -51,11 +51,13 @@ def print_footer(students)
 	puts "Overall, we have #{students.count} great students".center(@page_width)
 end
 
+###    Changed .chomp to .strip   ###
+
 def input_students
 	puts "Please enter a student's name."
 	# create empty array
 	students = []
-	name = gets.chomp
+	name = gets.strip
 	# while the name is not empty, repeat the following:
 	while !name.empty? do
 		# create a student but do not write it to the array yet, we need to know their cohort
@@ -64,12 +66,12 @@ def input_students
 
 		# ask for the student's cohort
 		puts "What month is #{name}'s cohort."
-		cohort = gets.chomp
+		cohort = gets.strip
 		
 		# this loop will keep aking for a cohort until a month is given
 		while !@months.include?(cohort.downcase) do
 			puts "That is not a valid month. Try again."
-			cohort = gets.chomp
+			cohort = gets.strip
 		end
 
 		student[:cohort] = cohort.capitalize
@@ -85,7 +87,7 @@ def input_students
 		puts "Please enter the next student's name"			
 		puts "Or, to finish, hit 'return'"
 		#get amother name from the user
-		name = gets.chomp
+		name = gets.strip
 	end
 	## return the array of students
 	students
