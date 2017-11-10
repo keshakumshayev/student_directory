@@ -32,19 +32,23 @@ def print_header
 	puts
 end
 
-def print(names)
-	names.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
-		puts "#{names.index(student)+1}: #{student[:name]}".ljust(30)+" |"+
-			"#{student[:cohort].capitalize}".center(9)+" cohort"+" | "+
-			"Favorite activity:"+" #{student[:hobbies]}".center(13)+" | "+
-			"Born in:"+" #{student[:country_of_birth]}".center(15)+" | "+
-			"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
+def print_student(student)
+	puts "#{student[:id]}. #{student[:name]}".ljust(30)+" | "+
+		"#{student[:cohort].capitalize}".center(9)+" cohort"+" | "+
+		"Favorite activity:"+" #{student[:hobbies]}".center(13)+" | "+
+		"Born in:"+" #{student[:country_of_birth]}".center(15)+" | "+
+		"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
+end
+
+def print(students)
+	students.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
+		print_student(student)
 	end
 end
 
-def print_footer(names)
+def print_footer(students)
 	puts
-	puts "Overall, we have #{names.count} great students".center(@page_width)
+	puts "Overall, we have #{students.count} great students".center(@page_width)
 end
 
 def input_students
@@ -55,8 +59,8 @@ def input_students
 	# while the name is not empty, repeat the following:
 	while !name.empty? do
 		# create a student but do not write it to the array yet, we need to know their cohort
-		student = {name: name, cohort: "Unknown", hobbies: :skydiving, country_of_birth: :UK, height: :'189'}
-		puts "Now we have #{students.count+1} students"
+		# now i have also added an id so students print with id regardless of their index in the students array
+		student = {id: students.count+1, name: name, cohort: "Unknown", hobbies: :skydiving, country_of_birth: :UK, height: :'189'}
 
 		# ask for the student's cohort
 		puts "What month is #{name}'s cohort."
@@ -69,8 +73,15 @@ def input_students
 		end
 
 		student[:cohort] = cohort.capitalize
-	
+
+		#added code to output '1 student' when only one and 'x students' when more than one
+		if students.count == 0
+			puts "Now we have 1 student."
+		else
+			puts "Now we have #{students.count+1} students."
+		end
 		students << student
+		puts
 		puts "Please enter the next student's name"			
 		puts "Or, to finish, hit 'return'"
 		#get amother name from the user
@@ -81,8 +92,20 @@ def input_students
 end
 
 #nothing happens until we call the methods
+#first we input the students and their respective cohorts
 students = input_students
+#then we create a list of all unique cohorts
+cohorts = students.map{|x| x[:cohort]}.uniq
 
 print_header
-print(students)
+
+#the following code prints out the students separated by cohort.
+cohorts.each do |cohort|
+	puts "#{cohort} cohort".center(@page_width)
+	students.each do |student|
+		if student[:cohort] == cohort
+			print_student(student)
+		end
+	end
+end
 print_footer(students)
