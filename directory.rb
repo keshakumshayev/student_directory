@@ -55,6 +55,7 @@ end
 
 def input_students
 	puts "Please enter a student's name."
+	puts "Or, to finish, hit 'return'"
 	# create empty array
 	students = []
 	name = gets.strip
@@ -99,15 +100,19 @@ students = input_students
 #then we create a list of all unique cohorts
 cohorts = students.map{|x| x[:cohort]}.uniq
 
-print_header
+if students.count > 0
+	print_header
 
-#the following code prints out the students separated by cohort.
-cohorts.each do |cohort|
-	puts "#{cohort} cohort".center(@page_width)
-	students.each do |student|
-		if student[:cohort] == cohort
-			print_student(student)
+	#the following code prints out the students separated by cohort.
+	cohorts.each do |cohort|
+		puts "#{cohort} cohort".center(@page_width)
+		students.each do |student|
+			if student[:cohort] == cohort
+				print_student(student)
+			end
 		end
 	end
+	print_footer(students)
+else
+	puts "No students are enrolled at Villains Academy"
 end
-print_footer(students)
