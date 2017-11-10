@@ -74,7 +74,7 @@ def input_students
 
 		student[:cohort] = cohort.capitalize
 
-		#added code to output '1 student' when only one and 'x students' when more than one
+		#added code to output '1 student' when only one and 'x students' when more than one.
 		if students.count == 0
 			puts "Now we have 1 student."
 		else
