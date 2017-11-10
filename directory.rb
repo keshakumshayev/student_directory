@@ -12,26 +12,28 @@
 # 	{name: "Joffrey Baratheon", cohort: :november},
 # 	{name: "Norman Bates", cohort: :november}
 # ]
-## ABOVE IS THE ORIGINAL ARRAY NOW WE INPUT STUDENTS
+## ABOVE IS THE ORIGINAL ARRAY, NOW WE INPUT STUDENTS
 ## WHEN WE RUN THE PROGRAM
-
+@page_width = 125
 def print_header
-	puts "The students of Villains Academy"
-	puts "--------------"
+	puts "The students of Villains Academy".center(@page_width)
+	puts "--------------".center(@page_width)
+	puts
 end
 
 def print(names)
-	names.each do |student| # back to the .each method
-		puts "#{names.index(student)+1}: #{student[:name]} |"+
-			" #{student[:cohort]} cohort |"+
-			"Hobbies include: #{student[:hobbies]} |"+
-			"Born in: #{student[:country_of_birth]} |"+
-			"#{student[:height]} tall." 
+	names.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
+		puts "#{names.index(student)+1}: #{student[:name]}".ljust(30)+" |"+
+			"#{student[:cohort].capitalize}".center(10)+"cohort"+" | "+
+			"Favorite activity:"+" #{student[:hobbies]}".center(13)+" | "+
+			"Born in:"+" #{student[:country_of_birth]}".center(15)+" | "+
+			"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
 	end
 end
 
 def print_footer(names)
-	puts "Overall, we have #{names.count} great students"
+	puts
+	puts "Overall, we have #{names.count} great students".center(@page_width)
 end
 
 def input_students
@@ -42,7 +44,7 @@ def input_students
 	name = gets.chomp
 	# while the name is not empty, repeat the following:
 	while !name.empty? do
-		students << {name: name, cohort: :november, hobbies: :skydiving, country_of_birth: :UK, height: :'189cm'}
+		students << {name: name, cohort: :November, hobbies: :skydiving, country_of_birth: :UK, height: :'189'}
 		puts "Now we have #{students.count} students"
 		#get amother name from the user
 		name = gets.chomp
@@ -53,6 +55,7 @@ end
 
 #nothing happens until we call the methods
 students = input_students
+
 print_header
 print(students)
 print_footer(students)
