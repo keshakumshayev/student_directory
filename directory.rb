@@ -94,15 +94,19 @@ def input_students
 	students
 end
 
+def print_menu
+	puts "1. Input the students"
+	puts "2. Show the students"
+	puts "3. Show the students listed by cohort"
+	puts "9. Exit"
+end
+
 def interactive_menu
 	students = []
 	cohorts = []
 	loop do
 		#print menu and ask for choice
-		puts "1. Input the students"
-		puts "2. Show the students"
-		puts "3. Show the students listed by cohort"
-		puts "9. Exit"
+		print_menu
 		#read input and save to a variable
 		selection = gets.chomp
 		#do corresponding action
