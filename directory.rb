@@ -100,6 +100,7 @@ def interactive_menu
 		#print menu and ask for choice
 		puts "1. Input the students"
 		puts "2. Show the students"
+		puts "3. Show the students listed by cohort"
 		puts "9. Exit"
 		#read input and save to a variable
 		selection = gets.chomp
@@ -111,6 +112,15 @@ def interactive_menu
 				print_header
 				print(students)
 				print_footer(students)
+			when "3"
+				cohorts.each do |cohort|
+					puts "#{cohort} cohort".center(@page_width)
+					students.each do |student|
+						if student[:cohort] == cohort
+							print_student(student)
+						end
+					end
+				end
 			when "9"
 				exit #terminates the program
 			else
