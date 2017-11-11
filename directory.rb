@@ -13,12 +13,11 @@
 def input_students
 	puts "Please enter a student's name."
 	puts "Or, to finish, hit 'return'"
-	# create empty array
+
 	name = STDIN.gets.chomp
 	# while the name is not empty, repeat the following:
 	while !name.empty? do
 		# create a student but do not write it to the array yet, we need to know their cohort
-		# now i have also added an id so students print with id regardless of their index in the students array
 		student = {name: name, cohort: "Unknown"}
 
 		# ask for the student's cohort
@@ -31,7 +30,7 @@ def input_students
 			cohort = STDIN.gets.chomp
 		end
 
-		student[:cohort] = cohort.capitalize
+		student[:cohort] = cohort.capitalize.to_sym
 
 		#added code to output '1 student' when only one and 'x students' when more than one.
 		if @students.count == 0
@@ -39,7 +38,7 @@ def input_students
 		else
 			puts "Now we have #{@students.count+1} students."
 		end
-		@students << student
+		add_student_to_list(student)
 		puts "\nPlease enter the next student's name"			
 		puts "Or, to finish, hit 'return'"
 		#get amother name from the user
@@ -48,6 +47,11 @@ def input_students
 	## return the array of students
 	@students
 end
+
+def add_student_to_list(student)
+	@students << student
+end
+
 #MENU
 def interactive_menu
 	loop do
@@ -142,7 +146,7 @@ def load_students(filename = "students.csv")
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort = line.chomp.split(',')
-		@students << {name: name, cohort: cohort.to_sym}
+		add_student_to_list({name: name, cohort: cohort.to_sym})
 	end
 	file.close
 end
