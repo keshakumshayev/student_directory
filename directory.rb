@@ -17,7 +17,8 @@
 
 
 @page_width = 125 #page width parameter added for use with .center method
-
+@students = []
+@cohorts = []
 @months = [
 'january', 'february',
 'march', 'april', 'may',
@@ -40,15 +41,15 @@ def print_student(student)
 		"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
 end
 
-def print(students)
-	students.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
+def print
+	@students.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
 		print_student(student)
 	end
 end
 
-def print_footer(students)
+def print_footer
 	puts
-	puts "Overall, we have #{students.count} great students".center(@page_width)
+	puts "Overall, we have #{@students.count} great students".center(@page_width)
 end
 
 ###    Changed .chomp to .strip   ###
@@ -57,41 +58,39 @@ def input_students
 	puts "Please enter a student's name."
 	puts "Or, to finish, hit 'return'"
 	# create empty array
-	students = []
-	name = gets.strip
+	name = gets.chomp
 	# while the name is not empty, repeat the following:
 	while !name.empty? do
 		# create a student but do not write it to the array yet, we need to know their cohort
 		# now i have also added an id so students print with id regardless of their index in the students array
-		student = {id: students.count+1, name: name, cohort: "Unknown", hobbies: :skydiving, country_of_birth: :UK, height: :'189'}
+		student = {id: @students.count+1, name: name, cohort: "Unknown", hobbies: :skydiving, country_of_birth: :UK, height: :'189'}
 
 		# ask for the student's cohort
 		puts "What month is #{name}'s cohort."
-		cohort = gets.strip
+		cohort = gets.chomp
 		
 		# this loop will keep aking for a cohort until a month is given
 		while !@months.include?(cohort.downcase) do
 			puts "That is not a valid month. Try again."
-			cohort = gets.strip
+			cohort = gets.chomp
 		end
 
 		student[:cohort] = cohort.capitalize
 
 		#added code to output '1 student' when only one and 'x students' when more than one.
-		if students.count == 0
+		if @students.count == 0
 			puts "Now we have 1 student."
 		else
-			puts "Now we have #{students.count+1} students."
+			puts "Now we have #{@students.count+1} students."
 		end
-		students << student
-		puts
-		puts "Please enter the next student's name"			
+		@students << student
+		puts "\nPlease enter the next student's name"			
 		puts "Or, to finish, hit 'return'"
 		#get amother name from the user
-		name = gets.strip
+		name = gets.chomp
 	end
 	## return the array of students
-	students
+	@students
 end
 
 def print_menu
@@ -101,9 +100,24 @@ def print_menu
 	puts "9. Exit"
 end
 
+def show_students
+  print_header
+  print(@students)
+  print_footer(@students)
+end
+
+def show_students_by_cohort
+	@cohorts.each do |cohort|
+		puts "#{cohort} cohort".center(@page_width)
+		@students.each do |student|
+			if student[:cohort] == cohort
+				print_student(student)
+			end
+		end
+	end
+end
+
 def interactive_menu
-	students = []
-	cohorts = []
 	loop do
 		#print menu and ask for choice
 		print_menu
@@ -112,26 +126,17 @@ def interactive_menu
 		#do corresponding action
 		case selection
 			when "1"
-				students = input_students
-				cohorts = students.map{|x| x[:cohort]}.uniq
+				@students = input_students
+				@cohorts = @students.map{|x| x[:cohort]}.uniq
 			when "2"
-				if students.count > 0
-					print_header
-					print(students)
-					print_footer(students)
+				if @students.count > 0
+					show_students
 				else
 					puts "No students are enrolled at Villains Academy"
 				end
 			when "3"
-				if students.count > 0
-					cohorts.each do |cohort|
-						puts "#{cohort} cohort".center(@page_width)
-						students.each do |student|
-							if student[:cohort] == cohort
-								print_student(student)
-							end
-						end
-					end
+				if @students.count > 0
+					show_students_by_cohort
 				else
 					puts "No students are enrolled at Villains Academy"
 				end
