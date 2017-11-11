@@ -1,20 +1,3 @@
-# first we put the list of students in an array
-# students = [
-# 	{name: "Dr. Hannibal Lecter", cohort: :november},
-# 	{name: "Darth Vader", cohort: :november},
-# 	{name: "Nurse Ratched", cohort: :november},
-# 	{name: "Michael Corleone", cohort: :november},
-# 	{name: "Alex DeLarge", cohort: :november},
-# 	{name: "The Wicked Witch of the West", cohort: :november},
-# 	{name: "Terminator", cohort: :november},
-# 	{name: "Freddy Krueger", cohort: :november},
-# 	{name: "The Joker", cohort: :november},
-# 	{name: "Joffrey Baratheon", cohort: :november},
-# 	{name: "Norman Bates", cohort: :november}
-# ]
-# # ABOVE IS THE ORIGINAL ARRAY, NOW WE INPUT STUDENTS
-# # WHEN WE RUN THE PROGRAM'
-
 
 @page_width = 125 #page width parameter added for use with .center method
 @students = []
@@ -26,33 +9,6 @@
 'september', 'october',
 'november', 'december'
 ]
-
-def print_header
-	puts "The students of Villains Academy".center(@page_width)
-	puts "--------------".center(@page_width)
-	puts
-end
-
-def print_student(student)
-	puts "#{student[:id]}. #{student[:name]}".ljust(30)+" | "+
-		"#{student[:cohort].capitalize}".center(9)+" cohort"+" | "+
-		"Favorite activity:"+" #{student[:hobbies]}".center(13)+" | "+
-		"Born in:"+" #{student[:country_of_birth]}".center(15)+" | "+
-		"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
-end
-
-def print
-	@students.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
-		print_student(student)
-	end
-end
-
-def print_footer
-	puts
-	puts "Overall, we have #{@students.count} great students".center(@page_width)
-end
-
-###    Changed .chomp to .strip   ###
 
 def input_students
 	puts "Please enter a student's name."
@@ -93,6 +49,13 @@ def input_students
 	@students
 end
 
+def interactive_menu
+	loop do
+		print_menu
+		process(gets.chomp)
+	end
+end
+
 def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
@@ -102,8 +65,8 @@ end
 
 def show_students
   print_header
-  print(@students)
-  print_footer(@students)
+  print_student_list
+  print_footer
 end
 
 def show_students_by_cohort
@@ -116,65 +79,58 @@ def show_students_by_cohort
 		end
 	end
 end
-
-def interactive_menu
-	loop do
-		#print menu and ask for choice
-		print_menu
-		#read input and save to a variable
-		selection = gets.chomp
-		#do corresponding action
-		case selection
-			when "1"
-				@students = input_students
-				@cohorts = @students.map{|x| x[:cohort]}.uniq
-			when "2"
-				if @students.count > 0
-					show_students
-				else
-					puts "No students are enrolled at Villains Academy"
-				end
-			when "3"
-				if @students.count > 0
-					show_students_by_cohort
-				else
-					puts "No students are enrolled at Villains Academy"
-				end
-			when "9"
-				exit #terminates the program
+#PROCESS MENU INPUT
+def process(selection)
+	#do corresponding action
+	case selection
+		when "1"
+			@students = input_students
+			@cohorts = @students.map{|x| x[:cohort]}.uniq
+		when "2"
+			if @students.count > 0
+				show_students
 			else
-				puts "I don't know what you meant, try again"
-		end
+				puts "No students are enrolled at Villains Academy"
+			end
+		when "3"
+			if @students.count > 0
+				show_students_by_cohort
+			else
+				puts "No students are enrolled at Villains Academy"
+			end
+		when "9"
+			exit #terminates the program
+		else
+			puts "I don't know what you meant, try again"
 	end
 end
-#nothing happens until we call the methods
-#first we input the students and their respective cohorts
-# students = input_students
-# #then we create a list of all unique cohorts
-# cohorts = students.map{|x| x[:cohort]}.uniq
+#--------------------------#
+def print_header
+	puts "The students of Villains Academy".center(@page_width)
+	puts "--------------".center(@page_width)
+	puts
+end
 
-# if students.count > 0
-# 	print_header
+def print_student(student)
+	puts "#{student[:id]}. #{student[:name]}".ljust(30)+" | "+
+		"#{student[:cohort].capitalize}".center(9)+" cohort"+" | "+
+		"Favorite activity:"+" #{student[:hobbies]}".center(13)+" | "+
+		"Born in:"+" #{student[:country_of_birth]}".center(15)+" | "+
+		"Height:"+"#{student[:height]}".rjust(4)+"cm."+" |"
+end
 
-# 	#the following code prints out the students separated by cohort.
-# 	cohorts.each do |cohort|
-# 		puts "#{cohort} cohort".center(@page_width)
-# 		students.each do |student|
-# 			if student[:cohort] == cohort
-# 				print_student(student)
-# 			end
-# 		end
-# 	end
-# 	print_footer(students)
-# else
-# 	puts "No students are enrolled at Villains Academy"
-# end
+def print_student_list
+	@students.each do |student| # NOW FORMATTED TO LOOK NICE using .center and .ljust / .rjust
+		print_student(student)
+	end
+end
 
-
-#NOW INSTEAD OF ALL THE ABOVE WE JUST CALL THE MENU
+def print_footer
+	puts
+	puts "Overall, we have #{@students.count} great students".center(@page_width)
+end
 
 interactive_menu
 
 
 
-# end
