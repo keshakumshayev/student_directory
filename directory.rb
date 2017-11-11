@@ -55,11 +55,40 @@ def interactive_menu
 		process(gets.chomp)
 	end
 end
+#PROCESS MENU INPUT
+def process(selection)
+	#do corresponding action
+	case selection
+		when "1"
+			@students = input_students
+			@cohorts = @students.map{|x| x[:cohort]}.uniq
+		when "2"
+			if @students.count > 0
+				show_students
+			else
+				puts "No students are enrolled at Villains Academy"
+			end
+		when "3"
+			save_students
+			puts "Student information saved to 'students.csv' in the current directory"
+		when "4"
+			if @students.count > 0
+				show_students_by_cohort
+			else
+				puts "No students are enrolled at Villains Academy"
+			end
+		when "9"
+			exit #terminates the program
+		else
+			puts "I don't know what you meant, try again"
+	end
+end
 #MENU METHODS
 def print_menu
 	puts "1. Input the students"
-	puts "2. Show the students"
-	puts "3. Show the students listed by cohort"
+	puts "2. Show the students"  
+	puts "3. Save the list to students.csv"
+	puts "4. Show the students listed by cohort"
 	puts "9. Exit"
 end
 
@@ -79,35 +108,11 @@ def show_students_by_cohort
 		end
 	end
 end
-#PROCESS MENU INPUT
-def process(selection)
-	#do corresponding action
-	case selection
-		when "1"
-			@students = input_students
-			@cohorts = @students.map{|x| x[:cohort]}.uniq
-		when "2"
-			if @students.count > 0
-				show_students
-			else
-				puts "No students are enrolled at Villains Academy"
-			end
-		when "3"
-			if @students.count > 0
-				show_students_by_cohort
-			else
-				puts "No students are enrolled at Villains Academy"
-			end
-		when "9"
-			exit #terminates the program
-		else
-			puts "I don't know what you meant, try again"
-	end
-end
+
 #--------------------------#
 def save_students
 	#open the file for writing
-	file = FIle.open("students.csv", "w")
+	file = File.open("students.csv", "w")
 	#iterate over the array of students
 	@students.each do |student|
 		student_data = [student[:name], student[:cohort]]
