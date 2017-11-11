@@ -9,7 +9,7 @@
 'september', 'october',
 'november', 'december'
 ]
-
+#INPUT STUDENT INFO
 def input_students
 	puts "Please enter a student's name."
 	puts "Or, to finish, hit 'return'"
@@ -48,14 +48,14 @@ def input_students
 	## return the array of students
 	@students
 end
-
+#MENU
 def interactive_menu
 	loop do
 		print_menu
 		process(gets.chomp)
 	end
 end
-
+#MENU METHODS
 def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
@@ -104,6 +104,19 @@ def process(selection)
 			puts "I don't know what you meant, try again"
 	end
 end
+#--------------------------#
+def save_students
+	#open the file for writing
+	file = FIle.open("students.csv", "w")
+	#iterate over the array of students
+	@students.each do |student|
+		student_data = [student[:name], student[:cohort]]
+		csv_line = student_data.join(",")
+		file.puts csv_line
+	end
+	file.close
+end
+
 #--------------------------#
 def print_header
 	puts "The students of Villains Academy".center(@page_width)
