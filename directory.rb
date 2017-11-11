@@ -95,6 +95,7 @@ def input_students
 end
 
 def interactive_menu
+	students = []
 	loop do
 		#print menu and ask for choice
 		puts "1. Input the students"
@@ -105,9 +106,13 @@ def interactive_menu
 		#do corresponding action
 		case selection
 			when "1"
-				#input the students
+				students = input_students
+			when "2"
+				print_header
+				print(students)
+				print_footer(students)
 			when "9"
-				#show the students
+				exit #terminates the program
 			else
 				puts "I don't know what you meant, try again"
 		end
