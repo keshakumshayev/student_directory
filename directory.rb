@@ -96,9 +96,21 @@ end
 
 def interactive_menu
 	loop do
-	#print menu and ask for choice
-	#read input and save to a variable
-	#do corresponding action
+		#print menu and ask for choice
+		puts "1. Input the students"
+		puts "2. Show the students"
+		puts "9. Exit"
+		#read input and save to a variable
+		selection = gets.chomp
+		#do corresponding action
+		case selection
+			when "1"
+				#input the students
+			when "9"
+				#show the students
+			else
+				puts "I don't know what you meant, try again"
+		end
 	end
 end
 #nothing happens until we call the methods
