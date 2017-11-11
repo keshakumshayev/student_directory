@@ -96,6 +96,7 @@ end
 
 def interactive_menu
 	students = []
+	cohorts = []
 	loop do
 		#print menu and ask for choice
 		puts "1. Input the students"
@@ -108,6 +109,7 @@ def interactive_menu
 		case selection
 			when "1"
 				students = input_students
+				cohorts = students.map{|x| x[:cohort]}.uniq
 			when "2"
 				print_header
 				print(students)
@@ -130,23 +132,31 @@ def interactive_menu
 end
 #nothing happens until we call the methods
 #first we input the students and their respective cohorts
-students = input_students
-#then we create a list of all unique cohorts
-cohorts = students.map{|x| x[:cohort]}.uniq
+# students = input_students
+# #then we create a list of all unique cohorts
+# cohorts = students.map{|x| x[:cohort]}.uniq
 
-if students.count > 0
-	print_header
+# if students.count > 0
+# 	print_header
 
-	#the following code prints out the students separated by cohort.
-	cohorts.each do |cohort|
-		puts "#{cohort} cohort".center(@page_width)
-		students.each do |student|
-			if student[:cohort] == cohort
-				print_student(student)
-			end
-		end
-	end
-	print_footer(students)
-else
-	puts "No students are enrolled at Villains Academy"
-end
+# 	#the following code prints out the students separated by cohort.
+# 	cohorts.each do |cohort|
+# 		puts "#{cohort} cohort".center(@page_width)
+# 		students.each do |student|
+# 			if student[:cohort] == cohort
+# 				print_student(student)
+# 			end
+# 		end
+# 	end
+# 	print_footer(students)
+# else
+# 	puts "No students are enrolled at Villains Academy"
+
+
+#NOW INSTEAD OF ALL THE ABOVE WE JUST CALL THE MENU
+
+interactive_menu
+
+
+
+# end
