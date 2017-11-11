@@ -111,17 +111,25 @@ def interactive_menu
 				students = input_students
 				cohorts = students.map{|x| x[:cohort]}.uniq
 			when "2"
-				print_header
-				print(students)
-				print_footer(students)
+				if students.count > 0
+					print_header
+					print(students)
+					print_footer(students)
+				else
+					puts "No students are enrolled at Villains Academy"
+				end
 			when "3"
-				cohorts.each do |cohort|
-					puts "#{cohort} cohort".center(@page_width)
-					students.each do |student|
-						if student[:cohort] == cohort
-							print_student(student)
+				if students.count > 0
+					cohorts.each do |cohort|
+						puts "#{cohort} cohort".center(@page_width)
+						students.each do |student|
+							if student[:cohort] == cohort
+								print_student(student)
+							end
 						end
 					end
+				else
+					puts "No students are enrolled at Villains Academy"
 				end
 			when "9"
 				exit #terminates the program
@@ -151,6 +159,7 @@ end
 # 	print_footer(students)
 # else
 # 	puts "No students are enrolled at Villains Academy"
+# end
 
 
 #NOW INSTEAD OF ALL THE ABOVE WE JUST CALL THE MENU
