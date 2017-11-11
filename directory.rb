@@ -94,6 +94,12 @@ def input_students
 	students
 end
 
+def interactive_menu
+	#print menu and ask for choice
+	#read input and save to a variable
+	#do corresponding action
+	#repeat
+end
 #nothing happens until we call the methods
 #first we input the students and their respective cohorts
 students = input_students
