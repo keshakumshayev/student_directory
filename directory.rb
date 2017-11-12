@@ -1,4 +1,4 @@
-
+require 'csv'
 @page_width = 45 #page width parameter added for use with .center method
 @students = []
 @cohorts = []
@@ -133,12 +133,10 @@ end
 #----SAVE--AND--LOAD--METHODS----#
 def save_students_to_file
 	#open the file for writing
-	File.open("students.csv", "w") do |file|
+	CSV.open("students.csv", "wb") do |file|
 		#iterate over the array of students
 		@students.each do |student|
-			student_data = [student[:name], student[:cohort]]
-			csv_line = student_data.join(',')
-			file.puts csv_line
+			file << [student[:name], student[:cohort]]
 		end
 	end
 end
@@ -158,12 +156,14 @@ def try_load_students
 end
 
 def load_students_from_file(filename = "students.csv")
+	@students = []
 	File.open(filename, "r") do |file|
-		file.readlines.each do |line|
-			name, cohort = line.chomp.split(',')
+		CSV.foreach(filename) do |line|
+			name, cohort = line
 			add_student_to_list({name: name, cohort: cohort.to_sym})
 		end
 	end
+	@cohorts = @students.map{|x| x[:cohort]}.uniq
 end
 
 #--------OTHER---------#
@@ -193,7 +193,6 @@ end
 def print_footer
 	puts "\nOverall, we have #{@students.count} great students".center(@page_width)
 end
-
 
 try_load_students
 
