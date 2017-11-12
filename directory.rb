@@ -11,41 +11,54 @@
 ]
 #INPUT STUDENT INFO
 def input_students
-	puts "Please enter a student's name."
-	puts "Or, to finish, hit 'return'"
-
-	name = STDIN.gets.chomp
-	# while the name is not empty, repeat the following:
+	name = ask_students_name
 	while !name.empty? do
-		# create a student but do not write it to the array yet, we need to know their cohort
 		student = {name: name, cohort: "Unknown"}
 
-		# ask for the student's cohort
-		puts "What month is #{name}'s cohort."
-		cohort = STDIN.gets.chomp
-		
-		# this loop will keep aking for a cohort until a month is given
-		while !@months.include?(cohort.downcase) do
-			puts "That is not a valid month. Try again."
-			cohort = STDIN.gets.chomp
-		end
-
-		student[:cohort] = cohort.capitalize.to_sym
+		ask_students_cohort(student)
 
 		#added code to output '1 student' when only one and 'x students' when more than one.
-		if @students.count == 0
-			puts "Now we have 1 student."
-		else
-			puts "Now we have #{@students.count+1} students."
-		end
+		print_student_count
+
 		add_student_to_list(student)
-		puts "\nPlease enter the next student's name"			
-		puts "Or, to finish, hit 'return'"
-		#get amother name from the user
-		name = STDIN.gets.chomp
+		
+		name = ask_students_name
 	end
 	## return the array of students
 	@students
+end
+
+def ask_students_name
+	if @students.count == 0
+		puts "Please enter a student's name."
+		puts "Or, to finish, hit 'return'"
+	else
+		puts "\nPlease enter the next student's name"			
+		puts "Or, to finish, hit 'return'"
+	end	
+	name = STDIN.gets.chomp
+	name
+end
+
+def ask_students_cohort(student)
+	# ask for the student's cohort
+	puts "What month is #{student[:name]}'s cohort."
+	cohort = STDIN.gets.chomp
+	
+	# this loop will keep aking for a cohort until a month is given
+	while !@months.include?(cohort.downcase) do
+		puts "That is not a valid month. Try again."
+		cohort = STDIN.gets.chomp
+	end	
+	student[:cohort] = cohort.capitalize.to_sym
+end
+
+def print_student_count
+	if @students.count == 0
+		puts "Now we have 1 student."
+	else
+		puts "Now we have #{@students.count+1} students."
+	end	
 end
 
 def add_student_to_list(student)
@@ -73,10 +86,10 @@ def process(selection)
 				puts "No students are enrolled at Villains Academy"
 			end
 		when "3"
-			save_students
+			save_students_to_file
 			puts "Student information saved to 'students.csv' in the current directory"
 		when "4"
-			load_students
+			load_students_from_file
 			puts "Student information loaded from 'students.csv' in the current directory"
 		when "8"
 			if @students.count > 0
@@ -108,17 +121,17 @@ end
 
 def show_students_by_cohort
 	@cohorts.each do |cohort|
-		puts "#{cohort} cohort".center(@page_width)
+		print_cohort_header(cohort)
 		@students.each do |student|
 			if student[:cohort] == cohort
-				print_student(student)
+				print_one_student(student)
 			end
 		end
 	end
 end
 
 #----SAVE--AND--LOAD--METHODS----#
-def save_students
+def save_students_to_file
 	#open the file for writing
 	file = File.open("students.csv", "w")
 	#iterate over the array of students
@@ -133,10 +146,10 @@ end
 def try_load_students
 	filename = ARGV.first # first argument from the command line
 	if filename.nil? # use 'students.csv' if no value is given
-		load_students('students.csv')
+		load_students_from_file('students.csv')
 		puts "Loaded #{@students.count} students from 'students.csv'"
 	elsif File.exists?(filename) # if it exists
-		load_students(filename)
+		load_students_from_file(filename)
 		puts "Loaded #{@students.count} students from #{filename}"
 	else # if it doesn't exist
 		puts "Sorry, #{filename} doesn't exist."
@@ -144,7 +157,7 @@ def try_load_students
 	end
 end
 
-def load_students(filename = "students.csv")
+def load_students_from_file(filename = "students.csv")
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort = line.chomp.split(',')
@@ -153,14 +166,18 @@ def load_students(filename = "students.csv")
 	file.close
 end
 
-#--------------------------#
+#--------OTHER---------#
 def print_header
-	puts "The students of Villains Academy".center(@page_width)
-	puts "--------------".center(@page_width)
-	puts
+	puts "The students of Villains Academy".center(@page_width)+"\n"+
+		 "--------------".center(@page_width)+"\n"
 end
 
-def print_student(student)
+def print_cohort_header(cohort)
+		puts "#{cohort} cohort".center(@page_width)+"\n"+
+		 	 "--------------".center(@page_width)+"\n"
+end
+
+def print_one_student(student)
 	puts "#{student[:name]}".ljust(30)+" | "+
 		"#{student[:cohort].capitalize}".center(9)+" cohort"
 end
@@ -168,14 +185,13 @@ end
 #prints nicely formatted list of student information
 def print_student_list
 	@students.each do |student|
-		print_student(student)
+		print_one_student(student)
 	end
 end
 
 #prints how many students we have altogether
 def print_footer
-	puts
-	puts "Overall, we have #{@students.count} great students".center(@page_width)
+	puts "\nOverall, we have #{@students.count} great students".center(@page_width)
 end
 
 
