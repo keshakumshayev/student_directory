@@ -133,14 +133,14 @@ end
 #----SAVE--AND--LOAD--METHODS----#
 def save_students_to_file
 	#open the file for writing
-	file = File.open("students.csv", "w")
-	#iterate over the array of students
-	@students.each do |student|
-		student_data = [student[:name], student[:cohort]]
-		csv_line = student_data.join(',')
-		file.puts csv_line
+	File.open("students.csv", "w") do |file|
+		#iterate over the array of students
+		@students.each do |student|
+			student_data = [student[:name], student[:cohort]]
+			csv_line = student_data.join(',')
+			file.puts csv_line
+		end
 	end
-	file.close
 end
 
 def try_load_students
@@ -158,12 +158,12 @@ def try_load_students
 end
 
 def load_students_from_file(filename = "students.csv")
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-		name, cohort = line.chomp.split(',')
-		add_student_to_list({name: name, cohort: cohort.to_sym})
+	File.open(filename, "r") do |file|
+		file.readlines.each do |line|
+			name, cohort = line.chomp.split(',')
+			add_student_to_list({name: name, cohort: cohort.to_sym})
+		end
 	end
-	file.close
 end
 
 #--------OTHER---------#
