@@ -1,4 +1,5 @@
 require 'csv'
+
 @page_width = 45 #page width parameter added for use with .center method
 @students = []
 @cohorts = []
@@ -86,10 +87,12 @@ def process(selection)
 				puts "No students are enrolled at Villains Academy"
 			end
 		when "3"
-			save_students_to_file
+			filename = ask_filename
+			save_students_to_file(filename)
 			puts "Student information saved to 'students.csv' in the current directory"
 		when "4"
-			load_students_from_file
+			filename = ask_filename
+			load_students_from_file(filename)
 			puts "Student information loaded from 'students.csv' in the current directory"
 		when "8"
 			if @students.count > 0
@@ -131,9 +134,16 @@ def show_students_by_cohort
 end
 
 #----SAVE--AND--LOAD--METHODS----#
-def save_students_to_file
+def ask_filename
+	puts "Please enter a file name (or hit 'enter' to use 'students.csv'): "
+	filename = gets.chomp
+	filename.empty? ? 'students.csv' : filename
+end
+
+def save_students_to_file(filename = "students.csv")
+	puts "Choose a file to save student info"
 	#open the file for writing
-	CSV.open("students.csv", "wb") do |file|
+	CSV.open(filename, "wb") do |file|
 		#iterate over the array of students
 		@students.each do |student|
 			file << [student[:name], student[:cohort]]
@@ -156,6 +166,7 @@ def try_load_students
 end
 
 def load_students_from_file(filename = "students.csv")
+	puts "Choose a file to load student info from"
 	@students = []
 	File.open(filename, "r") do |file|
 		CSV.foreach(filename) do |line|
